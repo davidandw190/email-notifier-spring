@@ -1,12 +1,16 @@
 spring:
+
+  # Profile
   profiles:
     active: ${ACTIVE_PROFILE:dev}
 
+  # Database
   datasource:
     url: jdbc:mysql://${MYSQL_HOST}:${MYSQL_PORT}/${MYSQL_DB}
     username: ${MYSQL_USERNAME}
     password: ${MYSQL_PASSWORD}
 
+  # Persistence
   jpa:
     generate-ddl: true
     show-sql: true
@@ -21,5 +25,28 @@ spring:
         jdbc:
           time_zone: EET
 
+    # Mail Sending
+    mail:
+      host: ${EMAIL_HOST}
+      port: ${EMAIL_PORT}
+      username: ${EMAIL_ADDRESS}
+      password: ${EMAIL_PASSWORD}
+      default-encoding: UTF-8
+      properties:
+        mail:
+          mime:
+            charset: UTF
+          smtp:
+            writetimeout: 10000
+            connectiontimeout: 10000
+            timeout: 10000
+            auth: true
+            starttls:
+              enable: true
+              required: true
+      verify:
+        host: ${VERIFY_EMAIL_HOST}
+
+# Server Config
 server:
   port: ${SERVER_PORT}

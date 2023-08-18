@@ -5,6 +5,7 @@ import com.davidandw190.emailnotifier.domain.User;
 import com.davidandw190.emailnotifier.dto.UserRequestDTO;
 import com.davidandw190.emailnotifier.repository.ConfirmationRepository;
 import com.davidandw190.emailnotifier.repository.UserRepository;
+import com.davidandw190.emailnotifier.service.EmailService;
 import com.davidandw190.emailnotifier.service.UserService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +19,13 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final ConfirmationRepository confirmationRepository;
+    private final EmailService emailService;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, ConfirmationRepository confirmationRepository) {
+    public UserServiceImpl(UserRepository userRepository, ConfirmationRepository confirmationRepository, EmailService emailService) {
         this.userRepository = userRepository;
         this.confirmationRepository = confirmationRepository;
+        this.emailService = emailService;
     }
 
     /**
@@ -45,10 +48,14 @@ public class UserServiceImpl implements UserService {
         User newUser = createUserFromRequest(request);
         userRepository.save(newUser);
 
-        Confirmation newUserConfirmation = new Confirmation(newUser);
-        confirmationRepository.save(newUserConfirmation);
+        Confirmation confirmation = new Confirmation(newUser);
+        confirmationRepository.save(confirmation);
 
-        /* TODO Send email to user with token */
+        emailService.sendSimpleEmailMessage(
+                newUser.getName(),
+                newUser.getEmail(),
+                confirmation.getToken()
+        );
 
         return newUser;
     }
