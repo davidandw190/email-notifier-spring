@@ -10,12 +10,14 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 public class EmailServiceImpl implements EmailService {
-    public static final String NEW_USER_ACCOUNT_VERIFICATION = "New User Account Verification";
+
     @Value("${spring.mail.verify.host}")
     private String host;
     @Value("${spring.mail.username}")
     private String fromEmail;
     private final JavaMailSender emailSender;
+
+    public static final String NEW_USER_ACCOUNT_VERIFICATION = "New User Account Verification";
 
     public EmailServiceImpl(JavaMailSender emailSender) {
         this.emailSender = emailSender;
@@ -28,7 +30,7 @@ public class EmailServiceImpl implements EmailService {
             mailMessage.setSubject(NEW_USER_ACCOUNT_VERIFICATION);
             mailMessage.setFrom(fromEmail);
             mailMessage.setTo(to);
-            mailMessage.setText("Hello, this is a simple email message!");
+            mailMessage.setText("Hello,  this is a simple email message!");
             emailSender.send(mailMessage);
 
         } catch (Exception e) {
