@@ -33,13 +33,7 @@ public class EmailUtils {
      * @return The complete verification URL.
      */
     private static String getVerificationURL(String host, String token) {
-        var verificationLinkBuilder = new StringBuilder();
 
-        verificationLinkBuilder
-                .append(host)
-                .append("/api/users/token=")
-                .append(token);
-
-        return verificationLinkBuilder.toString();
+        return host + "/api/users?token=" + token;
     }
 }
