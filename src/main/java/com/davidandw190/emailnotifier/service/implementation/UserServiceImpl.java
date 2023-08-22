@@ -7,6 +7,7 @@ import com.davidandw190.emailnotifier.repository.ConfirmationRepository;
 import com.davidandw190.emailnotifier.repository.UserRepository;
 import com.davidandw190.emailnotifier.service.EmailService;
 import com.davidandw190.emailnotifier.service.UserService;
+import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -51,7 +52,19 @@ public class UserServiceImpl implements UserService {
         Confirmation confirmation = new Confirmation(newUser);
         confirmationRepository.save(confirmation);
 
-        emailService.sendSimpleEmailMessage(
+//        emailService.sendSimpleEmailMessage(
+//                newUser.getName(),
+//                newUser.getEmail(),
+//                confirmation.getToken()
+//        );
+//
+//        emailService.sendMessageWithAttachment(
+//                newUser.getName(),
+//                newUser.getEmail(),
+//                confirmation.getToken()
+//        );
+
+        emailService.sendHtmlEmailWithEmbeddedFiles(
                 newUser.getName(),
                 newUser.getEmail(),
                 confirmation.getToken()

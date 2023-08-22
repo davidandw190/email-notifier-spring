@@ -6,6 +6,7 @@ import jakarta.mail.internet.MimeMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -92,8 +93,8 @@ public class EmailServiceImpl implements EmailService {
             helper.setTo(to);
             helper.setText(getEmailMessage(name, host, token));
 
-            var image = new FileSystemResource(new File(PATH + IMAGE_ATTACHMENT));
-            var document = new FileSystemResource(new File(PATH + DOCUMENT_ATTACHMENT));
+            var image =     new FileSystemResource(new File(PATH + IMAGE_ATTACHMENT));
+            var document =  new FileSystemResource(new File(PATH + DOCUMENT_ATTACHMENT));
 
             helper.addAttachment(Objects.requireNonNull(image.getFilename()), image);
             helper.addAttachment(Objects.requireNonNull(document.getFilename()), document);
@@ -108,7 +109,27 @@ public class EmailServiceImpl implements EmailService {
     @Async
     @Override
     public void sendMessageWithEmbeddedImages(String name, String to, String token) {
+        try {
+            MimeMessage mailMessage = getMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(mailMessage, true, UTF_8_ENCODING);
 
+            helper.setPriority(1);
+            helper.setSubject(NEW_USER_ACCOUNT_VERIFICATION);
+            helper.setFrom(fromEmail);
+            helper.setTo(to);
+            helper.setText(getEmailMessage(name, host, token));
+
+            var image =     new FileSystemResource(new File(PATH + IMAGE_ATTACHMENT));
+            var document =  new FileSystemResource(new File(PATH + DOCUMENT_ATTACHMENT));
+
+            helper.addInline(getContentId(image.getFilename()), image);
+            helper.addInline(getContentId(document.getFilename()), document);
+
+            emailSender.send(mailMessage);
+
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
     }
 
     @Async
@@ -131,5 +152,9 @@ public class EmailServiceImpl implements EmailService {
 
     private MimeMessage getMimeMessage() {
         return emailSender.createMimeMessage();
+    }
+
+    private String getContentId(String filename) {
+        return "<" + filename + ">";
     }
 }
