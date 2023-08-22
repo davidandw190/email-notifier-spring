@@ -1,8 +1,11 @@
 package com.davidandw190.emailnotifier.utils;
 
+import org.springframework.stereotype.Component;
+
 /**
  * Utility class for generating email messages and verification URLs.
  */
+@Component
 public class EmailUtils {
 
     /**

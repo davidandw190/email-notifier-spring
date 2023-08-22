@@ -1,10 +1,12 @@
 package com.davidandw190.emailnotifier.service;
 
+import jakarta.mail.MessagingException;
+
 public interface EmailService {
 
     void sendSimpleEmailMessage(String name, String to, String token);
 
-    void sendMessageWithAttachment(String name, String to, String token);
+    void sendMessageWithAttachment(String name, String to, String token) throws MessagingException;
 
     void sendMessageWithEmbeddedImages(String name, String to, String token);
 

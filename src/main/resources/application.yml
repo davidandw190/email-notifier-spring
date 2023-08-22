@@ -47,6 +47,11 @@ spring:
       verify:
         host: ${VERIFY_EMAIL_HOST}
 
+      resources:
+        path: ${RESOURCES_PATH}
+        image_attachment: ${IMAGE_ATTACHMENT}
+        document_attachment: ${DOCUMENT_ATTACHMENT}
+
 # Server Config
 server:
   port: ${SERVER_PORT}
