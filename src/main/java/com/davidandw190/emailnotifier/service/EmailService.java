@@ -10,8 +10,6 @@ public interface EmailService {
 
     void sendMessageWithEmbeddedImages(String name, String to, String token);
 
-    void sendMessageWithEmbeddedFiles(String name, String to, String token);
-
     void sendHtmlEmail(String name, String to, String token);
 
     void sendHtmlEmailWithEmbeddedFiles(String name, String to, String token);

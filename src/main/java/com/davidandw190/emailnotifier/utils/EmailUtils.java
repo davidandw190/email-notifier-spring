@@ -35,7 +35,7 @@ public class EmailUtils {
      * @param token The verification token for the account.
      * @return The complete verification URL.
      */
-    private static String getVerificationURL(String host, String token) {
+    public static String getVerificationURL(String host, String token) {
 
         return host + "/api/users?token=" + token;
     }
