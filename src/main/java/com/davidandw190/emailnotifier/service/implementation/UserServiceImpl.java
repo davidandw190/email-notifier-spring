@@ -68,8 +68,14 @@ public class UserServiceImpl implements UserService {
 //                newUser.getEmail(),
 //                confirmation.getToken()
 //        );
+//
+//        emailService.sendHtmlEmail(
+//                newUser.getName(),
+//                newUser.getEmail(),
+//                confirmation.getToken()
+//        );
 
-        emailService.sendHtmlEmail(
+        emailService.sendHtmlEmailWithEmbeddedFiles(
                 newUser.getName(),
                 newUser.getEmail(),
                 confirmation.getToken()
